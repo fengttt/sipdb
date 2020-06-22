@@ -6,13 +6,13 @@ import (
 )
 
 func TestSelect(t *testing.T) {
-	tree, err := pg_query.Parse("select 1")
+	tree, err := pg_query.Parse("select * from t where i = $d")
 	if err != nil {
 		t.Error(err)
 	}
 	t.Log(tree)
 
-	js, err := pg_query.ParseToJSON("select 1")
+	js, err := pg_query.ParseToJSON("select t.id, x.id from t, t.p as p, p.x as x")
 	if err != nil {
 		t.Error(err)
 	}
