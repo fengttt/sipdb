@@ -1,27 +1,56 @@
 package rowset
 
 import (
+	"fmt"
+
 	"github.com/fengttt/sipdb/types"
 )
 
-type SliceRowset struct {
+type sliceRowset struct {
 	s types.Schema
-	c ColVec
+	cols []ColVec
 }
 
-func FromSlice(s interface{}) {
-	var rs SliceRowset
-	rs.s.AddCol(types.OBJECT, "_1")
+type sliceRowsetCursor struct {
+	rs *sliceRowset
+	batch *Batch
+}
 
-	if t, ok := s.([]bool); ok {
-		rs.s.Cols[0].Typ = types.BOOL
-		rs.c.B = t
-		return
-	}
+func (c *sliceRowsetCursor) Rewind() {
+	c.batch = &Batch { c.rs.cols }
+}
 
-	if t, ok := s.([]int8); ok {
-		rs.s.Cols[0].Typ = types.INT8
-		rs.c.I8 = t
-		return
+func (c *sliceRowsetCursor) Next() (b *Batch) {
+	b = c.batch
+	c.batch = nil
+	return
+}
+
+func (rs *sliceRowset) Schema() *types.Schema {
+	return &rs.s
+}
+
+func (rs *sliceRowset) Rebind() {
+}
+
+func (rs *sliceRowset) Cursor() RowsetCursor {
+	c := &sliceRowsetCursor { rs, nil }
+	c.Rewind()
+	return c
+}
+
+func FromSlice(ss []interface{}) Rowset {
+	var rs sliceRowset
+	for i, s := range ss {
+		rs.s.AddCol(types.TypeOfSlice(s), fmt.Sprintf("_%d", i))
+		rs.cols = append(rs.cols, ColVec{nil, s})
 	}
+	return &rs
+}
+
+func FromOneSlice(s interface{}) Rowset {
+	var rs sliceRowset
+	rs.s.AddCol(types.TypeOfSlice(s), "_0")
+	rs.cols = append(rs.cols, ColVec{nil, s})
+	return &rs
 }

@@ -24,7 +24,7 @@ const (
 
 func (t Type) String() string {
 	switch t {
-	case ANY: 
+	case ANY:
 		return "any"
 	case BOOL:
 		return "bool"
@@ -62,6 +62,40 @@ func (t Type) String() string {
 	return "unknown type"
 }
 
+func TypeOfSlice(i interface{}) Type {
+	if _, ok := i.([]bool); ok {
+		return BOOL
+	}
+	if _, ok := i.([]int8); ok {
+		return INT8
+	}
+	if _, ok := i.([]int16); ok {
+		return INT16
+	}
+	if _, ok := i.([]int32); ok {
+		return INT32
+	}
+	if _, ok := i.([]int64); ok {
+		return INT64
+	}
+	if _, ok := i.([]float32); ok {
+		return FLOAT32 
+	}
+	if _, ok := i.([]float64); ok {
+		return FLOAT64
+	}
+	if _, ok := i.([]string); ok {
+		return STRING
+	}
+	if _, ok := i.([][]byte); ok {
+		return BYTES 
+	}
+	if _, ok := i.([]interface{}); ok {
+		return OBJECT
+	}
+	return ANY
+}
+
 type NullInfo int8
 
 const (
@@ -88,3 +122,5 @@ func (s *Schema) AddCol(t Type, n string) *Schema {
 	s.Cols = append(s.Cols, ci)
 	return s
 }
+
+
