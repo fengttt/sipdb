@@ -12,7 +12,7 @@ func TestSelect(t *testing.T) {
 	}
 	t.Log(tree)
 
-	js, err := pg_query.ParseToJSON("select t.id, x.id from t, t.p as p, p.x as x")
+	js, err := pg_query.ParseToJSON("select t.zab, max(t.id), maxxx(x.id) from t, t.p as p, p.x as x where p.xxx = t.xxx group by t.zzz")
 	if err != nil {
 		t.Error(err)
 	}
