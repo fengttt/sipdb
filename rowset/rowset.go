@@ -26,8 +26,6 @@ type Batch struct {
 type Rowset interface {
 	Schema() types.Schema
 	Next() *Batch
+	Rebind() 
 }
-
-
-
 

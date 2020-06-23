@@ -17,6 +17,8 @@ type Kind int
 
 const (
 	Internal	Kind = iota		// Internal error.
+	AlreadyExists
+	NotFound
 )
 
 func (k Kind) String() string {
