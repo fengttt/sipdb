@@ -1,7 +1,11 @@
 package rowset
 
+import (
+	"github.com/fengttt/sipdb/types"
+)
+
 type SliceRowset struct {
-	s Schema
+	s types.Schema
 	c ColVec
 }
 

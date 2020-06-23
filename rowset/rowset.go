@@ -1,7 +1,7 @@
 package rowset
 
 import (
-	"sipdb/types"
+	"github.com/fengttt/sipdb/types"
 )
 
 type ColVec struct {
