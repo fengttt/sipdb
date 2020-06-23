@@ -80,3 +80,11 @@ type ColInfo struct {
 type Schema struct {
 	Cols []ColInfo
 }
+
+func (s *Schema) AddCol(t Type, n string) *Schema {
+	var ci ColInfo
+	ci.Typ = t
+	ci.Name = n
+	s.Cols = append(s.Cols, ci)
+	return s
+}
