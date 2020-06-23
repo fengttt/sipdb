@@ -6,7 +6,7 @@ import (
 )
 
 func TestSelect(t *testing.T) {
-	tree, err := pg_query.Parse("select * from t where i = $d")
+	tree, err := pg_query.ParseToJSON("select t.foo.bar.zoo from t where t.x.y.z.w = 1")
 	if err != nil {
 		t.Error(err)
 	}
