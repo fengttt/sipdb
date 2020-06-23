@@ -1,6 +1,6 @@
 package types
 
-type Type int
+type Type int16
 
 const (
 	ANY		Type	= iota
@@ -62,6 +62,21 @@ func (t Type) String() string {
 	return "unknown type"
 }
 
+type NullInfo int8
 
+const (
+	DATA	NullInfo = 1 << iota
+	NULL
+	MISSING
+)
 
+type ColInfo struct {
+	Typ Type
+	TypMod int
+	NullInfo NullInfo
+	Name string
+}
 
+type Schema struct {
+	Cols []ColInfo
+}
